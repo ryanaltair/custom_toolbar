@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 
+import 'desktop_text_selection_controls_toolbar.dart';
 import 'global.dart';
 
 class GestureWrapper extends StatefulWidget {
@@ -38,8 +39,9 @@ class _GestureWrapperState extends State<GestureWrapper> {
 
   void onShow(BuildContext context, bool left) async {
     final selected = GlobalStore.selected;
-    // await Future.delayed(Duration(milliseconds: 300));
+    await Future.delayed(Duration(milliseconds: 300));
     // if (focus) return;
+    if (DesktopTextSelectionControlsToolbar.toolbarIsShow) return;
     showBottomSheet(
       context: context,
       builder: (context) {
@@ -77,7 +79,7 @@ class _GestureWrapperState extends State<GestureWrapper> {
               )
             : GestureDetector(
                 onSecondaryTap: () => onTapShow(context, false),
-                onTap: () => onTapShow(context, true),
+                // onTap: () => onTapShow(context, true),
                 child: widget.child),
       ),
     );

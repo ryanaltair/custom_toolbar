@@ -4,6 +4,7 @@ import 'package:flutter/rendering.dart';
 
 import 'desktop_text_selection_toolbar.dart';
 import 'desktop_text_selection_toolbar_button.dart';
+import 'global.dart';
 
 class DesktopTextSelectionControlsToolbar extends StatefulWidget {
   const DesktopTextSelectionControlsToolbar({super.key, 
@@ -18,7 +19,7 @@ class DesktopTextSelectionControlsToolbar extends StatefulWidget {
     required this.textLineHeight,
     required this.lastSecondaryTapDownPosition,
   });
-
+  static bool toolbarIsShow = false;
   final ClipboardStatusNotifier? clipboardStatus;
   final List<TextSelectionPoint> endpoints;
   final Rect globalEditableRegion;
@@ -44,6 +45,8 @@ class _DesktopTextSelectionControlsToolbarState extends State<DesktopTextSelecti
   @override
   void initState() {
     super.initState();
+    
+    DesktopTextSelectionControlsToolbar.toolbarIsShow = true;
     widget.clipboardStatus?.addListener(_onChangedClipboardStatus);
   }
 
@@ -59,6 +62,7 @@ class _DesktopTextSelectionControlsToolbarState extends State<DesktopTextSelecti
   @override
   void dispose() {
     super.dispose();
+    DesktopTextSelectionControlsToolbar.toolbarIsShow = false;
     widget.clipboardStatus?.removeListener(_onChangedClipboardStatus);
   }
 
