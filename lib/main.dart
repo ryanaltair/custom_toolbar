@@ -47,8 +47,22 @@ class _MyHomePageState extends State<MyHomePage> {
               title: 'TextLine',
               child: TextLine('TextLine'),
             )),
-            CloneWrapper(
-                title: 'SelectedLine', child: SelectedLine('SelectedLine')),
+            SelectionArea(
+              child: CloneWrapper(
+                  title: 'SelectedLine', child: SelectedLine('SelectedLine')),
+            ),
+            SelectionArea(
+              child: CloneWrapper(
+                  title: 'detector SelectedLine',
+                  child: GestureWrapper.detector(
+                      child: SelectedLine('detector SelectedLine'))),
+            ),
+            SelectionArea(
+              child: CloneWrapper(
+                  title: 'listener SelectedLine',
+                  child: GestureWrapper.listener(
+                      child: SelectedLine('listener SelectedLine'))),
+            ),
             SelectedContentWrapper(
               child: CloneWrapper(
                   title: 'detector TextLine',

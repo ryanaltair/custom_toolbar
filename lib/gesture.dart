@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 import 'global.dart';
 
-class GestureWrapper extends StatelessWidget {
+class GestureWrapper extends StatefulWidget {
   const GestureWrapper.listener({
     super.key,
     required this.child,
@@ -13,6 +13,13 @@ class GestureWrapper extends StatelessWidget {
   }) : useListener = false;
   final bool useListener;
   final Widget child;
+
+  @override
+  State<GestureWrapper> createState() => _GestureWrapperState();
+}
+
+class _GestureWrapperState extends State<GestureWrapper> {
+  bool focus = false;
   void onPointerShow(PointerDownEvent event, BuildContext context) async {
     // event.position;
     if (event.buttons == 1) {
@@ -31,10 +38,15 @@ class GestureWrapper extends StatelessWidget {
 
   void onShow(BuildContext context, bool left) async {
     final selected = GlobalStore.selected;
+    // await Future.delayed(Duration(milliseconds: 300));
+    // if (focus) return;
     showBottomSheet(
       context: context,
       builder: (context) {
-        final text = (left ? '👈' : '👉') + (selected.isEmpty ? '空白' : '文本');
+        final text = (left ? '👈' : '👉') +
+            (focus ? '🪞' : '') +
+            (selected.isEmpty ? '空白' : '文本') +
+            DateTime.now().toString();
         return Row(
           children: [
             const Spacer(),
@@ -52,17 +64,22 @@ class GestureWrapper extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: useListener
-          ? Listener(
-              onPointerDown: (event) => onPointerShow(event, context),
-              child: child,
-            )
-          : GestureDetector(
-              onSecondaryTap: () => onTapShow(context, false),
-              onTap: () => onTapShow(context, true),
-              child: child),
+    return FocusScope(
+      onFocusChange: (value) {
+        focus = value;
+      },
+      child: MouseRegion(
+        cursor: SystemMouseCursors.click,
+        child: widget.useListener
+            ? Listener(
+                onPointerDown: (event) => onPointerShow(event, context),
+                child: widget.child,
+              )
+            : GestureDetector(
+                onSecondaryTap: () => onTapShow(context, false),
+                onTap: () => onTapShow(context, true),
+                child: widget.child),
+      ),
     );
   }
 }
