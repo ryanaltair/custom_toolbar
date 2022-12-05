@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/src/rendering/editable.dart';
+import 'package:flutter/rendering.dart';
 
 import 'desktop_text_selection_controls_toolbar.dart';
 
@@ -56,6 +56,10 @@ class DesktopSelectionControls extends TextSelectionControls {
     // Allow SelectAll when selection is not collapsed, unless everything has
     // already been selected. Same behavior as Android.
     final TextEditingValue value = delegate.textEditingValue;
+
+    final text = value.text;
+    final selectionText = value.selection.textInside(text);
+    if (selectionText.isEmpty) return false;
     return delegate.selectAllEnabled &&
         value.text.isNotEmpty &&
         !(value.selection.start == 0 &&

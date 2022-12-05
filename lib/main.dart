@@ -1,5 +1,10 @@
+import 'package:custom_toolbar/desktop_selection_controls.dart';
+import 'package:custom_toolbar/global.dart';
 import 'package:custom_toolbar/selected_content_wrapper.dart';
 import 'package:flutter/material.dart';
+
+import 'gesture.dart';
+import 'text.dart';
 
 void main() {
   runApp(const MyApp());
@@ -33,18 +38,49 @@ class _MyHomePageState extends State<MyHomePage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+      body: SizedBox(
+        height: 500,
+        child: ListView(
           children: const [
-            GestureWrapper(
-                child: Padding(
-              padding: EdgeInsets.all(8.0),
-              child: TextLine('GestureWrapper'),
+            SelectedContentWrapper(
+                child: CloneWrapper(
+              title: 'TextLine',
+              child: TextLine('TextLine'),
             )),
-            GestureWrapper(
-                child: SelectedContentWrapper(child: TextLine('rowOne'))),
-            SelectedContentWrapper(child: TextLine('rowOne')),
+            CloneWrapper(
+                title: 'SelectedLine', child: SelectedLine('SelectedLine')),
+            SelectedContentWrapper(
+              child: CloneWrapper(
+                  title: 'detector TextLine',
+                  child: GestureWrapper.detector(
+                      child: TextLine('detector TextLine '))),
+            ),
+            SelectedContentWrapper(
+              child: CloneWrapper(
+                  title: 'listener TextLine ',
+                  child: GestureWrapper.listener(
+                      child: TextLine('listener TextLine '))),
+            ),
+            CloneWrapper(
+              child: GestureWrapper.detector(
+                  child: SelectedContentWrapper(
+                      child: TextLine('detector wrapper TextLine'))),
+            ),
+            CloneWrapper(
+              child: GestureWrapper.listener(
+                  child: SelectedContentWrapper(
+                      child: TextLine('listener wrapper TextLine'))),
+            ),
+            CloneWrapper(
+              child: GestureWrapper.detector(
+                  child: SelectedContentWrapper(
+                      child: SelectedLine('detector wrapper SelectedLine'))),
+            ),
+            CloneWrapper(
+              child: GestureWrapper.listener(
+                  child: SelectedContentWrapper(
+                      child: SelectedLine('listener wrapper Selected'))),
+            ),
           ],
         ),
       ),
@@ -52,49 +88,14 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 }
 
-class TextLine extends StatelessWidget {
-  const TextLine(this.text, {super.key});
-  final String text;
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      color: Colors.blue,
-      child: SizedBox(
-        height: 100,
-        width: 300,
-        child: Text(text),
-      ),
-    );
-  }
-}
-
-class GestureWrapper extends StatelessWidget {
-  const GestureWrapper({super.key, required this.child});
+class CloneWrapper extends StatelessWidget {
+  const CloneWrapper({super.key, required this.child, this.title = ''});
   final Widget child;
-  void onShow(BuildContext context) {
-    print('show');
-    showBottomSheet(
-      context: context,
-      builder: (context) {
-        return Container(
-          color: Colors.amber,
-          height: 200,
-          width: 200,
-        );
-      },
-    );
-  }
-
+  final String title;
   @override
   Widget build(BuildContext context) {
-    return MouseRegion(
-      cursor: SystemMouseCursors.click,
-      child: GestureDetector(
-        // onPointerDown: (event) => onShow(context),
-        onSecondaryTap: () => onShow(context),
-        onTap: () => onShow(context),
-        child: child,
-      ),
+    return Column(
+      children: [Text(title), child, child, child],
     );
   }
 }

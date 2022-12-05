@@ -21,7 +21,9 @@ class _SelectedContentWrapperState extends State<SelectedContentWrapper> {
   void dispose() {
     super.dispose();
   }
+void onSelectionChanged(){
 
+}
   @override
   Widget build(BuildContext context) {
     return SelectionArea(
