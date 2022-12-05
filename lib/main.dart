@@ -63,12 +63,13 @@ class _MyHomePageState extends State<MyHomePage> {
                   child: GestureWrapper.listener(
                       child: SelectedLine('listener SelectedLine'))),
             ),
-            SelectedContentWrapper(
-              child: CloneWrapper(
-                  title: 'detector TextLine',
-                  child: GestureWrapper.detector(
-                      child: TextLine('detector TextLine '))),
-            ),
+            CloneWrapper(
+                title: 'detector TextLine ✅',
+                child: GestureWrapper.detector(
+                  child: SelectedContentWrapper(
+                    child: TextLine('detector TextLine '),
+                  ),
+                )),
             SelectedContentWrapper(
               child: CloneWrapper(
                   title: 'listener TextLine ',
